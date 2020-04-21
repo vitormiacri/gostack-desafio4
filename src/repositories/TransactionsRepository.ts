@@ -18,7 +18,27 @@ class TransactionsRepository {
   }
 
   public getBalance(): Balance {
-    // TODO
+    const incomeTotal = this.transactions
+      .filter(transaction => transaction.type === 'income')
+      .reduce(
+        (accumulator, currentValue) => accumulator + currentValue.value,
+        0,
+      );
+
+    const outcomeTotal = this.transactions
+      .filter(transaction => transaction.type === 'outcome')
+      .reduce(
+        (accumulator, currentValue) => accumulator + currentValue.value,
+        0,
+      );
+
+    const balance = {
+      income: incomeTotal,
+      outcome: outcomeTotal,
+      total: incomeTotal - outcomeTotal,
+    };
+
+    return balance;
   }
 
   public create({ title, value, type }: TransactionDTO): Transaction {
